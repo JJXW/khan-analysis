@@ -9,11 +9,22 @@ import requests
 import json
 import pandas
 
-test = json.loads(requests.get('http://www.khanacademy.org/api/v1/playlists').text)
 
-test_data_frame=pandas.io.json.json_normalize(test)
+khan_tree_request = requests.get('http://www.khanacademy.org/api/v1/topictree')
 
-test2 = json.loads(requests.get('http://www.khanacademy.org/api/v1/topictree').text)
+khan_tree_json = json.loads(khan_tree_request.text)
 
-test_data_frame2=pandas.io.json.json_normalize(test)
+khan_tree_math_df=pandas.io.json.json_normalize(khan_tree_json['children'][1]['children'])
 
+# Description of first child layer gives the topic
+
+khan_tree_json['children'][0]['description'] # No description, but I'm guessing it's misc Khan videos
+khan_tree_json['children'][1]['description'] # Math!
+khan_tree_json['children'][2]['description'] # Description is missing, but it is Natural Science
+khan_tree_json['children'][3]['description'] # Econ / Finance
+
+# Description of second child layer describes video
+
+khan_tree_json['children'][0]['children'][3]['description'] # LeBrick
+khan_tree_json['children'][1]['children'][10]['description'] # Algebra 
+khan_tree_json['children'][2]['children'][2]['description'] # Chemistry
