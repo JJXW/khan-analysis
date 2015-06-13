@@ -34,11 +34,11 @@ def ExtractDFJson(json, df):
     for i in range(len(json)):
         if 'children' in json[i]:
             json_child = json[i]['children']
-            ExtractDFJson(json_child, df)
+            df = ExtractDFJson(json_child, df)
         else:
             df = df.append(pandas.io.json.json_normalize(json[i]))
-        print len(df)
+    print len(df)
     return df
     
-test_extract = ExtractDFJson(khan_tree_json['children'][1]['children'][0]['children'], khan_tree_df)
+test_extract = ExtractDFJson(khan_tree_json['children'][1]['children'][0]['children'][0]['children'], khan_tree_df)
 test_extract.to_csv("U:/khan_test.csv")
